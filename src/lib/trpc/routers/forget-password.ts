@@ -19,7 +19,7 @@ export const passwordRouter = createTRPCRouter({
       const { data, error: _error } = await resend.emails.send({
         from: 'Acme <onboarding@resend.dev>',
         to: [opts.input.email],
-        subject: 'Restaurant menu',
+        subject: 'next-authkick',
         react: RecoveryPasswordEmailTemplate({
           url: opts.input.url,
           token: opts.input.token,
