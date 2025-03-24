@@ -14,6 +14,16 @@ A modern Next.js template featuring BetterAuth for secure authentication with em
 - **Tailwind CSS v4** – Utility-first styling for rapid UI development.
 - **Shadcn** – Beautiful, customizable UI components.
 
+## Todo
+
+- [x] Authenticantion with email/password.
+- [x] Authenticantion with Google.
+- [x] Forget password.
+- [x] React query cache integration.
+- [x] Routes with trcp.
+- [x] Send email with resend.
+- [x] Database integration with drizzle orm.  
+
 ## Getting Started
 
 ### Prerequisites
