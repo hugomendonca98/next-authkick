@@ -1,29 +1,42 @@
 'use client'
 
+import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  LockKeyhole,
+  Mail,
+  User,
+  UserPlus,
+} from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
-  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useState } from 'react'
-import { Loader2 } from 'lucide-react'
-import { signIn, signUp } from '@/lib/auth-client'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { signUpFormData, signUpSchema } from './sign-up-schema'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { cn } from '@/lib/utils'
+import { Separator } from '@/components/ui/separator'
+import { type signUpFormData, signUpSchema } from './sign-up-schema'
 import { GoogleIcon } from '../icons/google-icon'
+import { signIn, signUp } from '@/lib/auth-client'
 
 export function SignUp() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const {
     register,
@@ -32,6 +45,7 @@ export function SignUp() {
   } = useForm<signUpFormData>({
     resolver: zodResolver(signUpSchema),
   })
+
   const onSubmit = async (data: signUpFormData) => {
     await signUp.email({
       email: data.email,
@@ -73,105 +87,194 @@ export function SignUp() {
     })
   }
 
+  const togglePasswordVisibility = () => setShowPassword(!showPassword)
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword(!showConfirmPassword)
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="max-w-md w-full flex justify-center"
-    >
-      <Card className="z-50 rounded-md rounded-t-none max-w-md w-full">
-        <CardHeader>
-          <CardTitle className="text-lg md:text-xl">Sign Up</CardTitle>
-          <CardDescription className="text-xs md:text-sm">
-            Enter your information to create an account
+    <div className="flex w-full items-center justify-center px-4 py-12 mt-48">
+      <Card className="w-full max-w-md overflow-hidden border-none shadow-lg transition-all duration-300 hover:shadow-xl pt-0">
+        <CardHeader className="space-y-1 pb-6 pt-8 bg-gradient-to-r from-slate-50 to-slate-100">
+          <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+            <UserPlus className="h-6 w-6 text-primary" />
+          </div>
+          <CardTitle className="text-center text-xl font-bold">
+            Create Account
+          </CardTitle>
+          <CardDescription className="text-center text-sm">
+            Enter your information to get started
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid gap-4">
-            <div className="grid grid-cols-1 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  placeholder="john doe"
-                  {...register('name', { required: true })}
-                />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CardContent className="space-y-6 pt-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-sm font-medium">
+                  Full Name
+                </Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    id="name"
+                    placeholder="John Doe"
+                    className="pl-10"
+                    {...register('name', { required: true })}
+                  />
+                </div>
                 {errors.name && (
-                  <span className="text-xs text-red-600">
+                  <p className="text-xs font-medium text-destructive">
                     {errors.name.message}
-                  </span>
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-medium">
+                  Email
+                </Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    className="pl-10"
+                    {...register('email', { required: true })}
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-xs font-medium text-destructive">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-sm font-medium">
+                  Password
+                </Label>
+                <div className="relative">
+                  <LockKeyhole className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    className="pl-10"
+                    autoComplete="new-password"
+                    {...register('password', { required: true })}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-1 top-1 h-8 w-8"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                    <span className="sr-only">
+                      {showPassword ? 'Hide password' : 'Show password'}
+                    </span>
+                  </Button>
+                </div>
+                {errors.password && (
+                  <p className="text-xs font-medium text-destructive">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label
+                  htmlFor="confirm_password"
+                  className="text-sm font-medium"
+                >
+                  Confirm Password
+                </Label>
+                <div className="relative">
+                  <LockKeyhole className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    id="confirm_password"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    className="pl-10"
+                    autoComplete="new-password"
+                    {...register('confirm_password', { required: true })}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-1 top-1 h-8 w-8"
+                    onClick={toggleConfirmPasswordVisibility}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                    <span className="sr-only">
+                      {showConfirmPassword ? 'Hide password' : 'Show password'}
+                    </span>
+                  </Button>
+                </div>
+                {errors.confirm_password && (
+                  <p className="text-xs font-medium text-destructive">
+                    {errors.confirm_password.message}
+                  </p>
                 )}
               </div>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                {...register('email', { required: true })}
-              />
-              {errors.email && (
-                <span className="text-xs text-red-600">
-                  {errors.email.message}
-                </span>
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                autoComplete="new-password"
-                placeholder="Password"
-                {...register('password', { required: true })}
-              />
-              {errors.password && (
-                <span className="text-xs text-red-600">
-                  {errors.password.message}
-                </span>
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password_confirmation">Confirm Password</Label>
-              <Input
-                id="password_confirmation"
-                type="password"
-                autoComplete="new-password"
-                placeholder="Confirm Password"
-                {...register('confirm_password', { required: true })}
-              />
-              {errors.confirm_password && (
-                <span className="text-xs text-red-600">
-                  {errors.confirm_password.message}
-                </span>
-              )}
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+
+            <Button
+              type="submit"
+              className="w-full transition-all duration-300"
+              disabled={loading}
+            >
               {loading ? (
-                <Loader2 size={16} className="animate-spin" />
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating account...
+                </>
               ) : (
-                'Create an account'
+                'Create account'
               )}
             </Button>
-            <div
-              className={cn(
-                'w-full gap-2 flex items-center',
-                'justify-between flex-col',
-              )}
-            >
-              <Button
-                type="button"
-                variant="outline"
-                className={cn('w-full gap-2')}
-                onClick={handleGoogleSignIn}
-              >
-                <GoogleIcon />
-                Sign in with Google
-              </Button>
+
+            <div className="relative flex items-center justify-center">
+              <Separator className="absolute w-full" />
+              <span className="relative bg-background px-2 text-xs text-muted-foreground">
+                OR CONTINUE WITH
+              </span>
             </div>
-          </div>
-        </CardContent>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full transition-all duration-300"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+            >
+              <GoogleIcon className="mr-2 h-4 w-4" />
+              Sign up with Google
+            </Button>
+          </CardContent>
+        </form>
+        <CardFooter className="flex justify-center border-t bg-muted/20 px-8 py-4">
+          <p className="text-center text-sm text-muted-foreground">
+            Already have an account?{' '}
+            <Link
+              href="/account/signin"
+              className="font-medium text-primary hover:underline"
+            >
+              Sign in
+            </Link>
+          </p>
+        </CardFooter>
       </Card>
-    </form>
+    </div>
   )
 }

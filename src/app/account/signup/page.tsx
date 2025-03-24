@@ -1,7 +1,15 @@
+import { getSession } from '@/actions/getSession'
 import { SignUp } from '@/components/sign-up'
+import { redirect } from 'next/navigation'
 import React from 'react'
 
-export default function page() {
+export default async function page() {
+  const session = await getSession()
+
+  if (session) {
+    return redirect('/dashboard')
+  }
+
   return (
     <div className="flex justify-center items-center w-full h-screen">
       <SignUp />
