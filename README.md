@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Full-Stack Template
+
+A modern Next.js template featuring BetterAuth for secure authentication with email/password and Google, Drizzle ORM for type-safe database interactions, PostgreSQL as the database, and tRPC for seamless type-safe API communication. Styled with Tailwind CSS and shadcn for a sleek and customizable UI. Also includes Resend for email handling and TanStack Query for efficient data fetching and state management.
+
+## Features
+
+- **Next.js 15** – App Router support for modern React features.
+- **BetterAuth** – Secure authentication with email/password and Google login.
+- **Drizzle ORM** – Type-safe database interactions.
+- **PostgreSQL** – Reliable and scalable relational database.
+- **tRPC** – Type-safe API communication between frontend and backend.
+- **TanStack Query** - Powerful asynchronous state management.
+- **Resend** - Simple and reliable email handling.
+- **Tailwind CSS v4** – Utility-first styling for rapid UI development.
+- **Shadcn** – Beautiful, customizable UI components.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 18.18.0+
+- PostgreSQL database
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/hugomendonca98/next-authkick.git
+   cd next-authkick
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
 
-## Learn More
+3. **Set up environment variables:**
+   Create a `.env.local` file and configure the necessary variables:
+   ```env
+   DATABASE_URL=your_postgres_connection_url
+   SITE_URL=your_client_url
+   BETTER_AUTH_SECRET=your_better_auth_secret
+   BETTER_AUTH_URL=your_client_url
+   USE_DEV_MIGRATIONS_PATH=true // if true run the migrations in separated folder and use the folder to dev database.
+   RESEND_API_KEY=your_resend_api_key
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. **Setup docker:**
+   ```sh
+   docker-compose up
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Run database migrations:**
+   ```sh
+   npx drizzle-kit generate
+   npx drizzle-kit migrate
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+6. **Start the development server:**
+   ```sh
+   npm run dev
+   ```
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Feel free to fork this repository and submit pull requests for improvements!
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is licensed under the MIT License.
+
