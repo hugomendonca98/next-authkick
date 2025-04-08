@@ -2,6 +2,11 @@
 
 A modern Next.js template featuring BetterAuth for secure authentication with email/password and Google, Drizzle ORM for type-safe database interactions, PostgreSQL as the database, and tRPC for seamless type-safe API communication. Styled with Tailwind CSS and shadcn for a sleek and customizable UI. Also includes Resend for email handling and TanStack Query for efficient data fetching and state management.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fhello-world)
+
+Demo: https://next-authkick.vercel.app/ 
+
+
 ## Features
 
 - **Next.js 15** – App Router support for modern React features.
